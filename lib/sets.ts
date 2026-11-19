@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import type { Database } from '@/lib/database.types';
 
 export type MusicSet = {
   id: string;
@@ -52,7 +53,7 @@ export async function getSets(): Promise<MusicSet[]> {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return [demoSet];
   try {
-    const supabase = createClient(url, key);
+    const supabase = createClient<Database>(url, key);
     const { data, error } = await supabase
       .from('sets')
       .select('id,title,subtitle,published_at,duration_label,genre,cover_url,audio_url,cover_path,audio_key,featured')
@@ -71,7 +72,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return defaultSettings;
   try {
-    const supabase = createClient(url, key);
+    const supabase = createClient<Database>(url, key);
     const { data, error } = await supabase
       .from('site_settings')
       .select('bio,artist_image_url,artist_image_path,contact_email,instagram_url,soundcloud_url,mixcloud_url')
