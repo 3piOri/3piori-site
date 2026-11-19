@@ -1,12 +1,17 @@
 import type { Metadata } from 'next';
 import './globals.css';
+
+const deploymentHost = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  || (deploymentHost ? `https://${deploymentHost}` : 'http://localhost:3000');
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://3piori.com'),
+  metadataBase: new URL(siteUrl),
   title: '3π Ori — Electronic Music Sessions',
   description: 'Long-form electronic music sessions by 3π Ori.',
   openGraph: {
     type: 'website',
-    url: 'https://3piori.com',
+    url: siteUrl,
     title: '3π Ori — Electronic Music Sessions',
     description: 'Long-form electronic music sessions by 3π Ori.',
     siteName: '3π Ori',
