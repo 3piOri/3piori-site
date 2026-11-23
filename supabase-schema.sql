@@ -74,6 +74,8 @@ create policy "Public can read site settings" on public.site_settings
   for select using (true);
 create policy "Admins can update site settings" on public.site_settings
   for all using (public.is_site_admin()) with check (public.is_site_admin());
+grant select on public.site_settings to anon, authenticated;
+grant insert, update, delete on public.site_settings to authenticated;
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('covers', 'covers', true, 10485760, array['image/jpeg','image/png','image/webp','image/avif'])

@@ -37,7 +37,11 @@ const emptyDraft: SetDraft = {
 };
 
 function messageOf(error: unknown) {
-  return error instanceof Error ? error.message : 'Ocurrió un error inesperado.';
+  if (error instanceof Error) return error.message;
+  if (typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string') {
+    return error.message;
+  }
+  return 'Ocurrió un error inesperado.';
 }
 
 function safeFileName(name: string) {
