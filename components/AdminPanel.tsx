@@ -48,6 +48,7 @@ export default function AdminPanel() {
   const [supabase] = useState(() => getSupabaseBrowserClient());
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [authorized, setAuthorized] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -404,7 +405,16 @@ export default function AdminPanel() {
         <p>Inicia sesión con la cuenta autorizada para gestionar sesiones e información del sitio.</p>
         <form onSubmit={signIn}>
           <label>Correo electrónico<input type="email" autoComplete="username" required value={email} onChange={(event) => setEmail(event.target.value)} /></label>
-          <label>Contraseña<input type="password" autoComplete="current-password" required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
+          <label>Contraseña<div className="admin-password-field">
+            <input type={showPassword ? 'text' : 'password'} autoComplete="current-password" required value={password} onChange={(event) => setPassword(event.target.value)} />
+            <button className="admin-password-toggle" type="button" aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'} onClick={() => setShowPassword((visible) => !visible)}>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                {showPassword
+                  ? <><path d="M3 3l18 18" /><path d="M10.6 10.6a2 2 0 002.8 2.8" /><path d="M9.9 5.2A10.8 10.8 0 0112 5c5 0 9 5 9 7a8.6 8.6 0 01-2.1 3.2M6.2 6.2C3.9 7.7 2 10.2 2 12c0 2 4 7 10 7a10.7 10.7 0 004.1-.8" /></>
+                  : <><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></>}
+              </svg>
+            </button>
+          </div></label>
           <button className="admin-primary" type="submit" disabled={busy}>{busy ? 'Ingresando…' : 'Iniciar sesión'}</button>
         </form>
         {errorMessage && <p className="admin-error" role="alert">{errorMessage}</p>}
